@@ -39,7 +39,6 @@ public class Player : MonoBehaviour
         {
             if (Vector3.Distance(hit.point, transform.position + euler) > 1f)
             {
-                Debug.Log(Vector3.Distance(hit.point, transform.position + euler));
                 transform.position += Vector3.down; 
             }
 
@@ -62,6 +61,13 @@ public class Player : MonoBehaviour
                     var gim = hit.transform.gameObject.GetComponent<Gimmick>();
                     gim.Volt();
                 }
+            }
+            
+
+            if(hit.transform.gameObject.tag == "Goal")
+            {
+                transform.position -= new Vector3(0,1,0);
+                hit.transform.GetComponent<CLEAR>().End();
             }
         }
     }

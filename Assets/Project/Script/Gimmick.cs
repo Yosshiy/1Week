@@ -12,3 +12,8 @@ public class Gimmick : MonoBehaviour
         KO.transform.DORotate(poy,1);
     }
 }
+
+public interface IGimmick
+{
+
+}
