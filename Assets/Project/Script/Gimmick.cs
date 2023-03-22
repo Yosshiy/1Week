@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Gimmick : MonoBehaviour
+public class Gimmick : MonoBehaviour,IGimmick
 {
-    [SerializeField] GameObject KO;
-    public void Volt()
+    [SerializeField] GameObject Bridge;
+    bool IGimmick.OnAction => ActionBool;
+    bool ActionBool = false;
+
+    public void Action()
     {
-        var poy = KO.transform.eulerAngles + new Vector3(0,90,0);
-        KO.transform.DORotate(poy,1);
+        ActionBool = true;
+        var qurt = Bridge.transform.eulerAngles + new Vector3(0,90,0);
+        Bridge.transform.DORotate(qurt,1).OnComplete(() => ActionBool = false);
     }
-}
-
-public interface IGimmick
-{
-
 }

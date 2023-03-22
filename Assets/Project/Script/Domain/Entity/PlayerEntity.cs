@@ -7,6 +7,7 @@ public interface IPlayerEntity
 {
     IReactiveProperty<bool> GetCharging {  get; }
     public IGimmick GetInterface(RaycastHit hit);
+    public void ChangeCharging(bool value);
 }
 
 public class PlayerEntity : IPlayerEntity

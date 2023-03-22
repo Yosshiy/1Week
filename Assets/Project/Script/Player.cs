@@ -14,16 +14,16 @@ public class Player : MonoBehaviour
     {
         Observable.EveryUpdate()
                   .Where(x => Input.GetKeyDown(KeyCode.W))
-                  .Subscribe(x => OnMove(Vector3.forward));
+                  .Subscribe(x => OnMove(Vector3.forward)).AddTo(this);
         Observable.EveryUpdate()
                   .Where(x => Input.GetKeyDown(KeyCode.S))
-                  .Subscribe(x => OnMove(Vector3.back));
+                  .Subscribe(x => OnMove(Vector3.back)).AddTo(this);
         Observable.EveryUpdate()
                   .Where(x => Input.GetKeyDown(KeyCode.A))
-                  .Subscribe(x => OnMove(Vector3.left));
+                  .Subscribe(x => OnMove(Vector3.left)).AddTo(this);
         Observable.EveryUpdate()
                   .Where(x => Input.GetKeyDown(KeyCode.D))
-                  .Subscribe(x => OnMove(Vector3.right));
+                  .Subscribe(x => OnMove(Vector3.right)).AddTo(this);
     }
 
     private void OnMove(Vector3 euler)
@@ -55,11 +55,18 @@ public class Player : MonoBehaviour
         {
             if(hit.transform.gameObject.tag == "Sender")
             {
-                Juuden = !Juuden;
-                if(Juuden == false)
+                if(Juuden == true)
                 {
-                    var gim = hit.transform.gameObject.GetComponent<Gimmick>();
-                    gim.Volt();
+                    var gim = hit.transform.gameObject.GetComponent<IGimmick>();
+                    if (!gim.OnAction)
+                    {
+                        gim.Action();
+                        Juuden = false;
+                    }
+                }
+                else
+                {
+                    Juuden = true;
                 }
             }
             
@@ -67,7 +74,7 @@ public class Player : MonoBehaviour
             if(hit.transform.gameObject.tag == "Goal")
             {
                 transform.position -= new Vector3(0,1,0);
-                hit.transform.GetComponent<CLEAR>().End();
+                hit.transform.GetComponent<IGimmick>().Action();
             }
         }
     }
