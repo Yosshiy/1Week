@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Stage : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
 {
     [SerializeField] Image Volt;
+    [SerializeField] string StageName;
     float PositionY;
 
     private void Start()
@@ -18,18 +19,18 @@ public class Stage : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPoi
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        Volt.transform.DOLocalMoveY(PositionY, 0.5f);
+        Volt.transform.DOLocalMoveY(PositionY, 0.5f).SetLink(gameObject);
 
     }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        Volt.rectTransform.DOLocalMoveY(PositionY + 100,0.5f);
-        Volt.rectTransform.DOLocalRotate(new Vector3(0, 360, 0), 0.5f, RotateMode.FastBeyond360);
+        Volt.rectTransform.DOLocalMoveY(PositionY + 100,0.5f).SetLink(gameObject);
+        Volt.rectTransform.DOLocalRotate(new Vector3(0, 360, 0), 0.5f, RotateMode.FastBeyond360).SetLink(gameObject);
     }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
-        SceneManager.LoadScene("Stage1");
+        SceneManager.LoadScene(StageName);
     }
 }

@@ -1,14 +1,16 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UniRx;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     bool Juuden = false;
-
+    [SerializeField] Image Thunder;
 
     void Start()
     {
@@ -30,7 +32,8 @@ public class Player : MonoBehaviour
     {
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position,euler,1))
+
+        if (Physics.Raycast(transform.position, euler, 0.6f))
         {
             transform.position += Vector3.up;
         }
@@ -45,6 +48,7 @@ public class Player : MonoBehaviour
             transform.position += euler;
         }
 
+        transform.rotation = Quaternion.LookRotation(euler);
         JuudenJ();
     }
 
@@ -62,11 +66,14 @@ public class Player : MonoBehaviour
                     {
                         gim.Action();
                         Juuden = false;
+                        Thunder.DOFillAmount(0, 0.5f).SetEase(Ease.InOutFlash).SetLink(gameObject); ;
+
                     }
                 }
                 else
                 {
                     Juuden = true;
+                    Thunder.DOFillAmount(1, 0.5f).SetEase(Ease.InOutFlash).SetLink(gameObject); ;
                 }
             }
             
@@ -77,6 +84,7 @@ public class Player : MonoBehaviour
                 hit.transform.GetComponent<IGimmick>().Action();
             }
         }
+       
     }
 
 

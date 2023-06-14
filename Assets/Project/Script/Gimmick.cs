@@ -5,14 +5,34 @@ using DG.Tweening;
 
 public class Gimmick : MonoBehaviour,IGimmick
 {
-    [SerializeField] GameObject Bridge;
+    [SerializeField] List<GameObject> Bridge;
     bool IGimmick.OnAction => ActionBool;
-    bool ActionBool = false;
+    public bool ActionBool = false;
+    public Gimmick gim;
 
     public void Action()
     {
-        ActionBool = true;
-        var qurt = Bridge.transform.eulerAngles + new Vector3(0,90,0);
-        Bridge.transform.DORotate(qurt,1).OnComplete(() => ActionBool = false);
+        if (!ActionBool)
+        {
+            ActionBool = true;
+            if(gim != null)
+            {
+                gim.ActionBool = true;
+            }
+
+            foreach (GameObject bridge in Bridge)
+            {
+                var qurt = bridge.transform.eulerAngles + new Vector3(0, 90, 0);
+                bridge.transform.DORotate(qurt, 1).OnComplete(() =>
+                {
+                    ActionBool = false;
+
+                    if (gim != null)
+                    {
+                        gim.ActionBool = false;
+                    }
+                }).SetLink(gameObject);
+            }
+        }
     }
 }
